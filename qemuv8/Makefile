@@ -60,9 +60,9 @@ all: test-$(1)
 endef
 
 define no-add-test
-test-$(1): out/test-$(1).DISABLED
+test-$(1): out/test-$(1).SKIPPED
 
-out/test-$(1).DISABLED:
+out/test-$(1).SKIPPED:
 	touch $$@
 endef
 
