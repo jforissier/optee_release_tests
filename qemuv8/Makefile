@@ -61,15 +61,15 @@ endef
 
 UTA32 := COMPILE_S_USER=32 CFG_USER_TA_TARGET_pkcs11=ta_arm32
 
-$(eval $(call add-test,1))
-$(eval $(call add-test,2,$(UTA32)))
-$(eval $(call add-test,3,CFG_WITH_PAGER=y))
-$(eval $(call add-test,4,CFG_WITH_PAGER=y $(UTA32)))
-$(eval $(call add-test,5,CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y))
-$(eval $(call add-test,6,CFG_REE_FS=n CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y))
-$(eval $(call add-test,7,CFG_CORE_DYN_SHM=n))
-$(eval $(call add-test,8,CFG_WITH_PAGER=y CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y))
-$(eval $(call add-test,9,CFG_ULIBS_SHARED=y))
+$(eval $(call add-test,01))
+$(eval $(call add-test,02,$(UTA32)))
+$(eval $(call add-test,03,CFG_WITH_PAGER=y))
+$(eval $(call add-test,04,CFG_WITH_PAGER=y $(UTA32)))
+$(eval $(call add-test,05,CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y))
+$(eval $(call add-test,06,CFG_REE_FS=n CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y))
+$(eval $(call add-test,07,CFG_CORE_DYN_SHM=n))
+$(eval $(call add-test,08,CFG_WITH_PAGER=y CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y))
+$(eval $(call add-test,09,CFG_ULIBS_SHARED=y))
 $(eval $(call add-test,10,CFG_ULIBS_SHARED=y CFG_WITH_PAGER=y CFG_CORE_HEAP_SIZE=98304))
 $(eval $(call add-test,11,CFG_FTRACE_SUPPORT=y CFG_SYSCALL_FTRACE=y CFLAGS_ta_arm32=-pg CFLAGS_ta_arm64=-pg)) # timeout regression 1021.2
 $(eval $(call add-test,12,CFG_CORE_DEBUG_CHECK_STACKS=y CFG_STACK_THREAD_EXTRA=256))
