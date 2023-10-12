@@ -93,3 +93,4 @@ ENV GP_PACKAGE=/home/builder/optee/TEE_Initial_Configuration-Test_Suite_v2_0_0_2
 ENV CFG_PKCS11_TA=y
 ENV CFG_USER_TA_TARGET_pkcs11=ta_arm64
 ENV CFG_ENABLE_EMBEDDED_TESTS=y
+ENV DUMP_LOGS_ON_ERROR=y
