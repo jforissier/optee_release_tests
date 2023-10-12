@@ -76,7 +76,7 @@ $(eval $(call add-test,12,CFG_CORE_DEBUG_CHECK_STACKS=y CFG_STACK_THREAD_EXTRA=2
 $(eval $(call add-test,13,CFG_LPAE_ADDR_SPACE_BITS=44))
 $(eval $(call add-test,14,CFG_LPAE_ADDR_SPACE_BITS=44 $(UTA32)))
 $(eval $(call add-test,15,CFG_LPAE_ADDR_SPACE_BITS=44 CFG_WITH_PAGER=y))
-$(eval $(call add-test,16,CFG_LPAE_ADDR_SPACE_BITS=44 CFG_WITH_PAGER=y $(UTA32)))  # pkcs11_1007 FAIL
+$(eval $(call add-test,16,CFG_LPAE_ADDR_SPACE_BITS=44 CFG_WITH_PAGER=y $(UTA32) CFG_CORE_HEAP_SIZE=131072))
 $(eval $(call add-test,17,CFG_CORE_PREALLOC_EL0_TBLS=y))
 $(eval $(call add-test,18,CFG_CORE_BTI=y CFG_TA_BTI=y CFG_USER_TA_TARGETS=ta_arm64 AARCH64_CROSS_COMPILE=/home/builder/x-tools/aarch64-unknown-linux-uclibc/bin/aarch64-unknown-linux-uclibc-)) # regression_1031.4 FAIL
 $(eval $(call add-test,19,PAUTH=y))
