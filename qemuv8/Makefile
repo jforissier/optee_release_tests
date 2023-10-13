@@ -80,7 +80,7 @@ $(eval $(call add-test,07,CFG_CORE_DYN_SHM=n))
 $(eval $(call add-test,08,CFG_WITH_PAGER=y CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y))
 $(eval $(call add-test,09,CFG_ULIBS_SHARED=y))
 $(eval $(call add-test,10,CFG_ULIBS_SHARED=y CFG_WITH_PAGER=y CFG_CORE_HEAP_SIZE=98304))
-$(eval $(call no-add-test,11,CFG_FTRACE_SUPPORT=y CFG_SYSCALL_FTRACE=y CFLAGS_ta_arm32=-pg CFLAGS_ta_arm64=-pg)) # https://github.com/OP-TEE/optee_os/issues/6375
+$(eval $(call add-test,11,CFG_FTRACE_SUPPORT=y CFG_SYSCALL_FTRACE=y CFLAGS_ta_arm32=-pg CFLAGS_ta_arm64=-pg))
 $(eval $(call add-test,12,CFG_CORE_DEBUG_CHECK_STACKS=y CFG_STACK_THREAD_EXTRA=256))
 $(eval $(call add-test,13,CFG_LPAE_ADDR_SPACE_BITS=44))
 $(eval $(call add-test,14,CFG_LPAE_ADDR_SPACE_BITS=44 $(UTA32)))
