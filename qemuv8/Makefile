@@ -46,6 +46,9 @@ clean:
 cleaner: clean
 	docker image rm -f optee_qemuv8_test_image
 
+results:
+	ls -1 out/*.PASS out/*.SKIPPED
+
 define add-test
 test-$(1): out/test-$(1).stdout
 
