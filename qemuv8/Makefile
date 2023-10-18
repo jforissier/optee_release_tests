@@ -32,7 +32,7 @@ all:
 .PHONY:
 test-image:
 	mkdir -p out/test-image
-	cp Dockerfile out/test-image
+	cp ../common/Dockerfile out/test-image
 	cp $(GP_PACKAGE_PATH) out/test-image
 	cd out/test-image && \
 		docker build $(DOCKER_OPTS) \
