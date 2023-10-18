@@ -1,0 +1,31 @@
+# syntax = edrevo/dockerfile-plus
+
+INCLUDE+ Dockerfile.base
+
+# Build and install cross-compiler with BTI support in ~/x-tools/aarch64-unknown-linux-gnu/bin
+RUN git clone https://github.com/crosstool-ng/crosstool-ng \
+ && cd crosstool-ng \
+ && ./bootstrap \
+ && ./configure --enable-local \
+ && make -j$(nproc) \
+ && ./ct-ng aarch64-unknown-linux-uclibc \
+ && sed -i '/CT_GCC_V_12/d' .config \
+ && echo 'CT_GCC_V_12=y' >>.config \
+ && sed -i 's/CT_GCC_VERSION=.*/CT_GCC_VERSION="12.3.0"/' .config \
+ && echo 'CT_CC_GCC_EXTRA_CONFIG_ARRAY="--enable-standard-branch-protection"' >>.config \
+ && echo 'CT_CC_GCC_CORE_EXTRA_CONFIG_ARRAY="--enable-standard-branch-protection"' >>.config \
+ && ./ct-ng build.$(nproc)
+RUN mkdir /home/builder/optee
+WORKDIR /home/builder/optee
+COPY TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z .
+RUN repo init -u https://github.com/OP-TEE/manifest.git -m qemu_v8.xml && repo sync -j10
+WORKDIR /home/builder/optee/build
+RUN make -j2 toolchains
+RUN make clang-toolchains
+ENV PATH=$PATH:/home/builder/optee/clang-12.0.0/bin
+ENV CFG_TEE_CORE_LOG_LEVEL=2
+ENV GP_PACKAGE=/home/builder/optee/TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z
+ENV CFG_PKCS11_TA=y
+ENV CFG_USER_TA_TARGET_pkcs11=ta_arm64
+ENV CFG_ENABLE_EMBEDDED_TESTS=y
+ENV DUMP_LOGS_ON_ERROR=y

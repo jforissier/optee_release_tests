@@ -1,3 +1,5 @@
+PLAT := qemuv8
+
 include ../common/common.mk
 
 UTA32 := COMPILE_S_USER=32 CFG_USER_TA_TARGET_pkcs11=ta_arm32

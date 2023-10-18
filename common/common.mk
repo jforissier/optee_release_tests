@@ -27,24 +27,28 @@ $(error GP_PACKAGE_PATH must point to TEE_Initial_Configuration-Test_Suite_v2_0_
 endif
 endif
 
+ifeq (,$(PLAT))
+$(error PLAT is undefined or empty)
+endif
+
 all:
 
 .PHONY:
 test-image:
 	mkdir -p out/test-image
-	cp ../common/Dockerfile out/test-image
+	cp ../common/Dockerfile.base ../common/Dockerfile.$(PLAT) out/test-image
 	cp $(GP_PACKAGE_PATH) out/test-image
 	cd out/test-image && \
 		docker build $(DOCKER_OPTS) \
 			--build-arg USER_ID=$$(id -u) \
 			--build-arg USER_GID=$$(id -g) \
-			-t optee_qemuv8_test_image .
+			-t optee_$(PLAT)_test_image -f Dockerfile.$(PLAT) .
 
 clean:
 	rm -rf out
 
 cleaner: clean
-	docker image rm -f optee_qemuv8_test_image
+	docker image rm -f optee_$(PLAT)_test_image
 
 results:
 	ls -1 out/*.PASS out/*.SKIPPED
@@ -55,7 +59,7 @@ test-$(1): out/test-$(1).stdout
 .PRECIOUS: out/test-$(1).stdout
 out/test-$(1).stdout: | test-image
 	docker run -i --rm -v $${HOME}/.cache/ccache:/home/builder/.cache/ccache \
-		optee_qemuv8_test_image make -j$$$$(nproc) -C /home/builder/optee/build $(2) check \
+		optee_$(PLAT)_test_image make -j$$$$(nproc) -C /home/builder/optee/build $(2) check \
 		</dev/null >out/test-$(1).stdout 2>out/test-$(1).stderr
 	touch out/test-$(1).PASS
 
