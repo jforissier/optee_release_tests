@@ -51,7 +51,7 @@ cleaner: clean
 	docker image rm -f optee_$(PLAT)_test_image
 
 results:
-	ls -1 out/*.PASS out/*.SKIPPED
+	RES=$$(ls out/*.PASS out/*.SKIPPED 2>/dev/null); echo $${RES} | sort | tr ' ' '\n'
 
 define add-test
 test-$(1): out/test-$(1).stdout
