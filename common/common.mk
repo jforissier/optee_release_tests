@@ -21,6 +21,8 @@
 
 GP_PACKAGE_PATH ?= ~/TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z
 
+DOCKER_OPTS ?= --no-cache
+
 ifeq (,$(GP_PACKAGE_PATH))
 ifeq (,$(filter clean,$(MAKECMDGOALS)))
 $(error GP_PACKAGE_PATH must point to TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z)
