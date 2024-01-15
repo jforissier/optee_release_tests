@@ -16,7 +16,7 @@
 #
 # - Re-build and re-run only test configuration number 10:
 #
-#   rm out/test-10.stdout
+#   rm out/test-10.log
 #   make test-10
 
 GP_PACKAGE_PATH ?= ~/TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z
@@ -36,7 +36,9 @@ endif
 all:
 
 .PHONY:
-test-image:
+test-image: out/.test-image
+
+out/.test-image:
 	mkdir -p out/test-image
 	cp ../common/Dockerfile.base ../common/Dockerfile.$(PLAT) out/test-image
 	cp $(GP_PACKAGE_PATH) out/test-image
@@ -45,6 +47,7 @@ test-image:
 			--build-arg USER_ID=$$(id -u) \
 			--build-arg USER_GID=$$(id -g) \
 			-t optee_$(PLAT)_test_image -f Dockerfile.$(PLAT) .
+	touch $@
 
 clean:
 	rm -rf out
@@ -56,13 +59,13 @@ results:
 	RES=$$(ls out/*.PASS out/*.SKIPPED 2>/dev/null); echo $${RES} | sort | tr ' ' '\n'
 
 define add-test
-test-$(1): out/test-$(1).stdout
+test-$(1): out/test-$(1).log
 
-.PRECIOUS: out/test-$(1).stdout
-out/test-$(1).stdout: | test-image
+.PRECIOUS: out/test-$(1).log
+out/test-$(1).log: out/.test-image
 	docker run -i --rm -v $${HOME}/.cache/ccache:/home/builder/.cache/ccache \
 		optee_$(PLAT)_test_image make -j$$$$(nproc) -C /home/builder/optee/build $(2) check \
-		</dev/null >out/test-$(1).stdout 2>out/test-$(1).stderr
+		</dev/null 2>&1 >out/test-$(1).log
 	touch out/test-$(1).PASS
 
 all: test-$(1)
