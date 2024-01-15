@@ -72,6 +72,7 @@ define no-add-test
 test-$(1): out/test-$(1).SKIPPED
 
 out/test-$(1).SKIPPED:
+	mkdir -p out
 	touch $$@
 
 all: test-$(1)
