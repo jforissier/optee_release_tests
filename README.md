@@ -2,12 +2,13 @@
 
 cd qemuv8
 make cleaner
-make -j
+make all-tests
 make results
+
+# (Re-)run a single test
+rm out/test-01*
+make test-01
 
 ## Run the tests without rebuilding the Docker image
 
-cd qemuv8
-make clean
-make -j 
-make results
+Use "make clean" instead of "make cleaner"

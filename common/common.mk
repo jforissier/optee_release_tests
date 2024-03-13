@@ -58,13 +58,19 @@ cleaner: clean
 results:
 	RES=$$(ls out/*.PASS out/*.SKIPPED 2>/dev/null); echo $${RES} | sort | tr ' ' '\n'
 
+NPROC_IN_CONTAINER ?= $$$$(nproc)
+
+all-tests:
+	$(MAKE) -j$(nproc) all NPROC_IN_CONTAINER=1 CONTAINER_FLAGS="BR2_PER_PACKAGE_DIRECTORIES=n"
+
 define add-test
 test-$(1): out/test-$(1).log
 
 .PRECIOUS: out/test-$(1).log
 out/test-$(1).log: out/.test-image
 	docker run -i --rm -v $${HOME}/.cache/ccache:/home/builder/.cache/ccache \
-		optee_$(PLAT)_test_image make -j$$$$(nproc) -C /home/builder/optee/build $(2) check \
+		optee_$(PLAT)_test_image make -j$(NPROC_IN_CONTAINER) -C /home/builder/optee/build $(2) check \
+		$(CONTAINER_FLAGS) \
 		</dev/null 2>&1 >out/test-$(1).log
 	touch out/test-$(1).PASS
 
