@@ -2,7 +2,7 @@
 
 cd qemuv8
 make cleaner
-make all-tests
+make -j4 all  # build & run 4 configurations simultaneously, each with make -j$(nproc)
 make results
 
 # (Re-)run a single test
