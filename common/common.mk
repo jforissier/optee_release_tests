@@ -77,7 +77,7 @@ out/test-$(1).log: out/.test-image
 all: test-$(1)
 endef
 
-define no-add-test
+define skip-test
 test-$(1): out/test-$(1).SKIPPED
 
 out/test-$(1).SKIPPED:
