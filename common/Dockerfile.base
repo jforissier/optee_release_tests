@@ -66,4 +66,5 @@ RUN groupadd -g ${USER_GID} -o builder && \
     useradd -m -u ${USER_ID} -g ${USER_GID} -o builder
 USER builder
 ENV HOME /home/builder
+ENV BR2_DL_DIR /home/builder/buildroot_dl
 WORKDIR /home/builder
