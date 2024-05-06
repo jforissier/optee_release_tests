@@ -49,11 +49,18 @@ out/.test-image:
 			-t optee_$(PLAT)_test_image -f Dockerfile.$(PLAT) .
 	touch $@
 
+# Clean test logs and result to be able to run them again
 clean:
-	rm -rf out
+	rm -rf out/test-*.*
 
+# clean + also remove Docker image
 cleaner: clean
+	rm -rf out/.test-image out/test_image
 	docker image rm -f optee_$(PLAT)_test_image
+
+# cleaner + remove source packages downloaded by Buildroot
+distclean: cleaner
+	rm -rf out/buildroot_dl
 
 results:
 	RES=$$(ls out/*.PASS out/*.SKIPPED 2>/dev/null); echo $${RES} | sort | tr ' ' '\n'
