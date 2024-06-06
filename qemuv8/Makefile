@@ -4,7 +4,7 @@ include ../common/common.mk
 
 UTA32 := COMPILE_S_USER=32 CFG_USER_TA_TARGET_pkcs11=ta_arm32
 
-$(eval $(call add-test,01))
+$(eval $(call add-test,01,XTEST_ARGS="-l 14"))
 $(eval $(call add-test,02,$(UTA32)))
 $(eval $(call add-test,03,CFG_WITH_PAGER=y))
 $(eval $(call add-test,04,CFG_WITH_PAGER=y $(UTA32)))
