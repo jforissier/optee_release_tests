@@ -21,8 +21,8 @@ COPY TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z .
 RUN repo init -u https://github.com/OP-TEE/manifest.git -m qemu_v8.xml && repo sync -j10
 WORKDIR /home/builder/optee/build
 RUN make -j2 toolchains
-RUN make clang-toolchains
-ENV PATH=$PATH:/home/builder/optee/clang-12.0.0/bin
+RUN make clang-toolchains-build
+ENV PATH=$PATH:/home/builder/optee/toolchains/clang-18.1.7/bin
 ENV CFG_TEE_CORE_LOG_LEVEL=2
 ENV GP_PACKAGE=/home/builder/optee/TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z
 ENV CFG_PKCS11_TA=y
