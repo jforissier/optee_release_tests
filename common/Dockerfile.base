@@ -14,6 +14,7 @@ RUN apt install -y \
     cscope \
     curl \
     device-tree-compiler \
+    docker.io \
     e2tools \
     expect \
     fastboot \
@@ -62,8 +63,10 @@ RUN apt install -y \
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo && chmod a+x /usr/bin/repo
 ARG USER_ID
 ARG USER_GID
+ARG HOST_DOCKER_GID
 RUN groupadd -g ${USER_GID} -o builder && \
-    useradd -m -u ${USER_ID} -g ${USER_GID} -o builder
+    groupadd -g ${HOST_DOCKER_GID} -o host_docker && \
+    useradd -m -u ${USER_ID} -g ${USER_GID} -G host_docker -o builder
 USER builder
 ENV HOME /home/builder
 ENV BR2_DL_DIR /home/builder/buildroot_dl

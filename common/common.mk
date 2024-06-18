@@ -46,6 +46,7 @@ out/.test-image:
 		docker build $(DOCKER_OPTS) \
 			--build-arg USER_ID=$$(id -u) \
 			--build-arg USER_GID=$$(id -g) \
+			--build-arg HOST_DOCKER_GID=$$(stat -c %g /var/run/docker.sock 2>/dev/null || echo 0) \
 			-t optee_$(PLAT)_test_image -f Dockerfile.$(PLAT) .
 	touch $@
 
@@ -76,7 +77,8 @@ test-$(1): out/test-$(1).log
 .PRECIOUS: out/test-$(1).log
 out/test-$(1).log: out/.test-image
 	mkdir -p $$(CURDIR)/out/buildroot_dl
-	docker run -i --rm -v $${HOME}/.cache/ccache:/home/builder/.cache/ccache \
+	docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock \
+		-v $${HOME}/.cache/ccache:/home/builder/.cache/ccache \
 		-v $$$$(pwd)/out/buildroot_dl:/home/builder/buildroot_dl \
 		optee_$(PLAT)_test_image make -j$(NPROC_IN_CONTAINER) -C /home/builder/optee/build $(2) check \
 		$(CONTAINER_FLAGS) \
