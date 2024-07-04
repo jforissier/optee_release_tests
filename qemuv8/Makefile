@@ -24,7 +24,7 @@ $(eval $(call add-test,17,CFG_CORE_PREALLOC_EL0_TBLS=y))
 $(eval $(call skip-test,18,CFG_CORE_BTI=y CFG_TA_BTI=y CFG_USER_TA_TARGETS=ta_arm64 AARCH64_CROSS_COMPILE=/home/builder/x-tools/aarch64-unknown-linux-uclibc/bin/aarch64-unknown-linux-uclibc-)) # regression_1031.4 FAIL
 $(eval $(call add-test,19,PAUTH=y))
 $(eval $(call add-test,20,MEMTAG=y))
-$(eval $(call add-test,21,COMPILER=clang))
+$(eval $(call add-test-clang,21,COMPILER=clang))
 $(eval $(call add-test,22,XEN_BOOT=y))
 $(eval $(call skip-test,23,SPMC_AT_EL=2)) # https://github.com/OP-TEE/optee_os/issues/6374
 $(eval $(call add-test,24,CFG_CRYPTOLIB_NAME=mbedtls CFG_CRYPTOLIB_DIR=lib/libmbedtls XTEST_ARGS="-x pkcs11_1021 -x pkcs11_1022 -x pkcs11_1023 -x pkcs11_1026"))
