@@ -21,6 +21,9 @@ COPY TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z .
 RUN repo init -u https://github.com/OP-TEE/manifest.git -m qemu_v8.xml && repo sync -j10
 WORKDIR /home/builder/optee/build
 RUN make -j2 toolchains
+# Older Clang (version 12)
+RUN make clang-toolchains
+ENV PATH=/home/builder/optee/clang-12.0.0/bin:$PATH
 # Note:
 # Clang is normally installed with "make clang-toolchains-build" but this
 # cannot be done here because it uses Docker (so a proper Docker-in-Docker
@@ -29,7 +32,7 @@ RUN make -j2 toolchains
 # ideal since it will cause more overhead if more Clang tests are added.
 # clang-toolchains-build cannot be run here because it uses Docker
 #RUN make clang-toolchains-build
-ENV PATH=$PATH:/home/builder/optee/toolchains/clang-18.1.7/bin
+ENV PATH=/home/builder/optee/toolchains/clang-18.1.7/bin:$PATH
 ENV CFG_TEE_CORE_LOG_LEVEL=2
 ENV GP_PACKAGE=/home/builder/optee/TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z
 ENV CFG_PKCS11_TA=y
