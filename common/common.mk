@@ -88,7 +88,7 @@ out/test-$(1).log: out/.test-image
 all: test-$(1)
 endef
 
-define add-test-clang
+define add-test-new-clang
 test-$(1): out/test-$(1).log
 
 .PRECIOUS: out/test-$(1).log
