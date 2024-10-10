@@ -21,6 +21,12 @@
 
 GP_PACKAGE_PATH ?= ~/TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z
 
+export CFG_TEE_CORE_LOG_LEVEL = 2
+export GP_PACKAGE = /home/builder/optee/TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z
+export CFG_PKCS11_TA = y
+export CFG_ENABLE_EMBEDDED_TESTS = y
+export DUMP_LOGS_ON_ERROR = y
+
 DOCKER_OPTS ?= --no-cache
 
 ifeq (,$(GP_PACKAGE_PATH))
@@ -78,7 +84,7 @@ test-$(1): out/test-$(1).log
 out/test-$(1).log: out/.test-image
 	mkdir -p $$(CURDIR)/out/buildroot_dl
 	docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock \
-		-v $${HOME}/.cache/ccache:/home/builder/.cache/ccache \
+		-v $${HOME}/.ccache:/home/builder/.ccache \
 		-v $$$$(pwd)/out/buildroot_dl:/home/builder/buildroot_dl \
 		optee_$(PLAT)_test_image make -j$(NPROC_IN_CONTAINER) -C /home/builder/optee/build $(2) check \
 		$(CONTAINER_FLAGS) \
@@ -87,24 +93,6 @@ out/test-$(1).log: out/.test-image
 
 all: test-$(1)
 endef
-
-define add-test-new-clang
-test-$(1): out/test-$(1).log
-
-.PRECIOUS: out/test-$(1).log
-out/test-$(1).log: out/.test-image
-	mkdir -p $$(CURDIR)/out/buildroot_dl
-	docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock \
-		-v $${HOME}/.cache/ccache:/home/builder/.cache/ccache \
-		-v $$$$(pwd)/out/buildroot_dl:/home/builder/buildroot_dl \
-		optee_$(PLAT)_test_image /bin/bash -c 'make -j$(NPROC_IN_CONTAINER) -C /home/builder/optee/build clang-toolchains-build && make -j$(NPROC_IN_CONTAINER) -C /home/builder/optee/build $(2) check' \
-		$(CONTAINER_FLAGS) \
-		</dev/null 2>&1 >out/test-$(1).log
-	touch out/test-$(1).PASS
-
-all: test-$(1)
-endef
-
 
 define skip-test
 test-$(1): out/test-$(1).SKIPPED

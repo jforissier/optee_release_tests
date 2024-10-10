@@ -7,19 +7,4 @@ WORKDIR /home/builder/optee
 COPY TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z .
 RUN repo init -u https://github.com/OP-TEE/manifest.git && repo sync -j10
 WORKDIR /home/builder/optee/build
-RUN make -j2 toolchains
-# Older Clang (version 12)
-RUN make clang-toolchains
-ENV PATH=/home/builder/optee/clang-12.0.0/bin:$PATH
-# Newer Clang
-# Clang is normally installed with "make clang-toolchains-build" but this
-# cannot be done here because it uses Docker (so a proper Docker-in-Docker
-# setup would be required which is not quite simple to do)
-# Instead we build Clang specifically for the Clang test(s). This is not
-# ideal since it will cause more overhead if more Clang tests are added.
-#RUN make clang-toolchains-build
-ENV PATH=/home/builder/optee/toolchains/clang-18.1.7/bin:$PATH
-ENV CFG_TEE_CORE_LOG_LEVEL=2
-ENV GP_PACKAGE=/home/builder/optee/TEE_Initial_Configuration-Test_Suite_v2_0_0_2-2017_06_09.7z
-ENV CFG_PKCS11_TA=y
-ENV DUMP_LOGS_ON_ERROR=y
+RUN make -j3 toolchains

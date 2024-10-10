@@ -2,6 +2,8 @@ PLAT := qemuv8
 
 include ../common/common.mk
 
+export CFG_USER_TA_TARGET_pkcs11 = ta_arm64
+
 UTA32 := COMPILE_S_USER=32 CFG_USER_TA_TARGET_pkcs11=ta_arm32
 WITH_RPMB := CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y CFG_RPMB_ANNOUNCE_PROBE_CAP=n
 
@@ -32,4 +34,3 @@ $(eval $(call add-test,24,CFG_CRYPTOLIB_NAME=mbedtls CFG_CRYPTOLIB_DIR=lib/libmb
 $(eval $(call add-test,25,CFG_SECSTOR_TA_MGMT_PTA=y CHECK_TESTS=xtest XTEST_ARGS="regression_1008"))
 $(eval $(call add-test,26,CFG_CRYPTO_AES_GCM_FROM_CRYPTOLIB=y))
 $(eval $(call add-test,27,CFG_CRYPTO_WITH_CE82=y))
-$(eval $(call add-test-new-clang,28,COMPILER=clang))
