@@ -83,12 +83,13 @@ test-$(1): out/test-$(1).log
 .PRECIOUS: out/test-$(1).log
 out/test-$(1).log: out/.test-image
 	mkdir -p $$(CURDIR)/out/buildroot_dl
-	docker run -i --rm -v /var/run/docker.sock:/var/run/docker.sock \
+	docker run -i --name $(PLAT)-test-$(1) -v /var/run/docker.sock:/var/run/docker.sock \
 		-v $${HOME}/.ccache:/home/builder/.ccache \
 		-v $$$$(pwd)/out/buildroot_dl:/home/builder/buildroot_dl \
 		optee_$(PLAT)_test_image make -j$(NPROC_IN_CONTAINER) -C /home/builder/optee/build $(2) check \
 		$(CONTAINER_FLAGS) \
 		</dev/null 2>&1 >out/test-$(1).log
+	docker rm $(PLAT)-test-$(1)
 	touch out/test-$(1).PASS
 
 all: test-$(1)
