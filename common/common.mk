@@ -44,7 +44,7 @@ all:
 .PHONY:
 test-image: out/.test-image
 
-out/.test-image:
+out/.test-image: ../common/Dockerfile.base ../common/Dockerfile.$(PLAT)
 	mkdir -p out/test-image
 	cp ../common/Dockerfile.base ../common/Dockerfile.$(PLAT) out/test-image
 	cp $(GP_PACKAGE_PATH) out/test-image
