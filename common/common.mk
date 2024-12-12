@@ -70,7 +70,7 @@ distclean: cleaner
 	rm -rf out/buildroot_dl
 
 results:
-	RES=$$(ls out/*.PASS out/*.SKIPPED 2>/dev/null); echo $${RES} | sort | tr ' ' '\n'
+	RES=$$(ls out/*.PASS out/*.FAIL out/*.SKIPPED 2>/dev/null); echo $${RES} | sort | tr ' ' '\n'
 
 NPROC_IN_CONTAINER ?= $$$$(nproc)
 
@@ -88,7 +88,7 @@ out/test-$(1).log: out/.test-image
 		-v $$$$(pwd)/out/buildroot_dl:/home/builder/buildroot_dl \
 		optee_$(PLAT)_test_image make -j$(NPROC_IN_CONTAINER) -C /home/builder/optee/build $(2) check \
 		$(CONTAINER_FLAGS) \
-		</dev/null 2>&1 >out/test-$(1).log
+		</dev/null 2>&1 >out/test-$(1).log || (touch out/test-$(1).FAIL; false)
 	docker rm $(PLAT)-test-$(1)
 	touch out/test-$(1).PASS
 
