@@ -34,3 +34,4 @@ $(eval $(call add-test,24,CFG_CRYPTOLIB_NAME=mbedtls CFG_CRYPTOLIB_DIR=lib/libmb
 $(eval $(call add-test,25,CFG_SECSTOR_TA_MGMT_PTA=y CHECK_TESTS=xtest XTEST_ARGS="regression_1008"))
 $(eval $(call add-test,26,CFG_CRYPTO_AES_GCM_FROM_CRYPTOLIB=y))
 $(eval $(call add-test,27,CFG_CRYPTO_WITH_CE82=y))
+$(eval $(call add-test,28,CFG_LOCKDEP=y CFG_LOCKDEP_RECORD_STACK=n))
