@@ -35,3 +35,4 @@ $(eval $(call add-test,25,CFG_SECSTOR_TA_MGMT_PTA=y CHECK_TESTS=xtest XTEST_ARGS
 $(eval $(call add-test,26,CFG_CRYPTO_AES_GCM_FROM_CRYPTOLIB=y))
 $(eval $(call add-test,27,CFG_CRYPTO_WITH_CE82=y))
 $(eval $(call add-test,28,CFG_LOCKDEP=y CFG_LOCKDEP_RECORD_STACK=n))
+$(eval $(call add-test,29,SEL0_SPS=y))
