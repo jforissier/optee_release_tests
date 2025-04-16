@@ -18,4 +18,7 @@ ENV GP_PACKAGE=/home/builder/optee/TEE_Initial_Configuration-Test_Suite_v2_0_0_2
 ENV CFG_TEE_CORE_LOG_LEVEL=2
 ENV CFG_PKCS11_TA=y
 ENV CFG_ENABLE_EMBEDDED_TESTS=y
+# Use MBed TLS "unsafe" modular exponentiation. The default one is much slower when
+# working on private keys which makes some tests too slow
+ENV CFG_CORE_UNSAFE_MODEXP=y
 ENV DUMP_LOGS_ON_ERROR=y
