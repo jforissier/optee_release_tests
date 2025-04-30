@@ -2,6 +2,7 @@ FROM jforissier/optee_os_ci:qemu_check
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update && apt upgrade -y
 RUN apt install -y \
+    7zip \
     xsltproc
 ARG USER_ID
 ARG USER_GID
