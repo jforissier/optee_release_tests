@@ -40,3 +40,7 @@ $(eval $(call add-test,30,SPMC_AT_EL=1 CFG_SECURE_PARTITION=y CFG_SPMC_TESTS=y))
 $(eval $(call skip-test,31,SPMC_AT_EL=2 XEN_BOOT=y)) # Timeout in regression_1006 https://github.com/OP-TEE/optee_os/issues/7445
 $(eval $(call add-test,32,CFG_DYN_CONFIG=n CFG_DYN_STACK_CONFIG=n))
 $(eval $(call add-test,33,SPMC_AT_EL=1 XEN_BOOT=y))
+$(eval $(call add-test,34,CFG_ULIBS_SHARED=y CFG_ENCRYPT_TA=y))
+$(eval $(call add-test,35,CFG_ENCRYPT_TA=y))
+$(eval $(call add-test,36,CFG_TEE_CORE_NB_CORE=24 CFG_NUM_THREADS=24 QEMU_SMP=24 GICV3=y))
+$(eval $(call add-test,37,CFG_TEE_CORE_NB_CORE=8 CFG_NUM_THREADS=8 QEMU_SMP=8 GICV3=n))
