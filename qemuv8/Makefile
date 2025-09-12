@@ -5,16 +5,19 @@ include ../common/common.mk
 export CFG_USER_TA_TARGET_pkcs11 = ta_arm64
 
 UTA32 := COMPILE_S_USER=32 CFG_USER_TA_TARGET_pkcs11=ta_arm32
-WITH_RPMB := CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y CFG_RPMB_ANNOUNCE_PROBE_CAP=n
+# Testing RPMB with emulation of the RPMB device in tee-supplicant (and thus OP-TEE doing special RPC supplicant calls for RPMB)
+WITH_RPMB_EMU_SUPP := CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y CFG_RPMB_ANNOUNCE_PROBE_CAP=n BR2_PACKAGE_OPTEE_CLIENT_EXT_RPMB_EMU=y
+# Testing RPMB with emulation of the RPMB device in QEMU itself (and thus OP-TEE using the in-kernel RPMB interface)
+WITH_RPMB := CFG_RPMB_FS=y CFG_RPMB_WRITE_KEY=y CFG_RPMB_ANNOUNCE_PROBE_CAP=y BR2_PACKAGE_OPTEE_CLIENT_EXT_RPMB_EMU=n
 
 $(eval $(call add-test,01,XTEST_ARGS="-l 14"))
 $(eval $(call add-test,02,$(UTA32)))
 $(eval $(call add-test,03,CFG_WITH_PAGER=y))
 $(eval $(call add-test,04,CFG_WITH_PAGER=y $(UTA32)))
-$(eval $(call add-test,05,$(WITH_RPMB)))
-$(eval $(call add-test,06,CFG_REE_FS=n $(WITH_RPMB))) # https://github.com/OP-TEE/optee_os/issues/7215
+$(eval $(call add-test,05,$(WITH_RPMB_EMU_SUPP)))
+$(eval $(call add-test,06,CFG_REE_FS=n $(WITH_RPMB_EMU_SUPP))) # https://github.com/OP-TEE/optee_os/issues/7215
 $(eval $(call add-test,07,CFG_CORE_DYN_SHM=n))
-$(eval $(call add-test,08,CFG_WITH_PAGER=y $(WITH_RPMB)))
+$(eval $(call add-test,08,CFG_WITH_PAGER=y $(WITH_RPMB_EMU_SUPP)))
 $(eval $(call add-test,09,CFG_ULIBS_SHARED=y))
 $(eval $(call add-test,10,CFG_ULIBS_SHARED=y CFG_WITH_PAGER=y))
 $(eval $(call add-test,11,CFG_FTRACE_SUPPORT=y CFG_SYSCALL_FTRACE=y CFLAGS_ta_arm32=-pg CFLAGS_ta_arm64=-pg)) # https://github.com/OP-TEE/optee_os/issues/7216
@@ -44,3 +47,6 @@ $(eval $(call add-test,34,CFG_ULIBS_SHARED=y CFG_ENCRYPT_TA=y))
 $(eval $(call add-test,35,CFG_ENCRYPT_TA=y))
 $(eval $(call add-test,36,CFG_TEE_CORE_NB_CORE=24 CFG_NUM_THREADS=24 QEMU_SMP=24 GICV3=y))
 $(eval $(call add-test,37,CFG_TEE_CORE_NB_CORE=8 CFG_NUM_THREADS=8 QEMU_SMP=8 GICV3=n))
+# TBD - test with patched QEMU
+# https://lists.trustedfirmware.org/archives/list/op-tee@lists.trustedfirmware.org/thread/PLAB2NVXMYLZPAJWIVXBZSDVYT56AWH2/
+$(eval $(call skip-test,38,$(WITH_RPMB)))
