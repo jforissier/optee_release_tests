@@ -50,3 +50,5 @@ $(eval $(call add-test,37,CFG_TEE_CORE_NB_CORE=8 CFG_NUM_THREADS=8 QEMU_SMP=8 GI
 # TBD - test with patched QEMU
 # https://lists.trustedfirmware.org/archives/list/op-tee@lists.trustedfirmware.org/thread/PLAB2NVXMYLZPAJWIVXBZSDVYT56AWH2/
 $(eval $(call skip-test,38,$(WITH_RPMB)))
+# Depends on https://review.trustedfirmware.org/q/topic:%22sbsa2%22
+$(eval $(call skip-test,39,PLAT_QEMU=sbsa)) # Implies SPMC_AT_EL=1
